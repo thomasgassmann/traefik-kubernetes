@@ -1,0 +1,46 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: traefik-config
+data:
+  traefik.toml: |
+    logLevel = "INFO"
+    defaultEntryPoints = ["https", "http"]
+
+    [kubernetes]
+    [kubernetes.ingressEndpoint]
+
+    [traefikLog]
+
+    [entryPoints]
+      [entryPoints.http]
+      address = ":80"
+        [entryPoints.http.redirect]
+        entryPoint = "https"
+      [entryPoints.https]
+      address = ":443"
+        [entryPoints.https.tls]
+
+    [acme]
+      email = "<Email>"
+      storage = "/etc/traefik/acme/acme.json"
+      entryPoint = "https"
+      # uncomment this for staging
+      # caServer = "https://acme-staging-v02.api.letsencrypt.org/directory"
+      caServer = "https://acme-v02.api.letsencrypt.org/directory"
+      onHostRule = true
+      acmeLogging = true
+
+      [acme.httpChallenge]
+      entryPoint = "http"
+
+      [[acme.domains]]
+        main = "example.com"
+
+    # API definition
+    [api]
+    entryPoint = "traefik"
+    dashboard = true
+
+    [ping]
+    entryPoint = "http"

@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: demo-traefik-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: traefik.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: traefik-ingress-controller
+              servicePort: 8080
