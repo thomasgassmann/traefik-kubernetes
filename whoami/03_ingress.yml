@@ -1,0 +1,15 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: demo-whoami-traefik-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+spec:
+  rules:
+    - host: whoami.example.com
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: demo-whoami-service
+              servicePort: 80
